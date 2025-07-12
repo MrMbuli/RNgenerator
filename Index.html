@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UK 49s Generator</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <meta name="theme-color" content="#ffd700" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    h1 {
+      color: #2a2a2a;
+    }
+    #numbers {
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+    .ball {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      background: #ffd700;
+      color: #000;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 50px;
+      font-weight: bold;
+      box-shadow: 0 0 5px #aaa;
+    }
+    .booster {
+      background: #ff5733;
+      color: #fff;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>UK 49s Generator</h1>
+  <div id="numbers"></div>
+  <button onclick="generateNumbers()">Generate</button>
+
+  <script>
+    function generateNumbers() {
+      const pool = Array.from({ length: 49 }, (_, i) => i + 1);
+      const result = [];
+      while (result.length < 7) {
+        const index = Math.floor(Math.random() * pool.length);
+        result.push(pool.splice(index, 1)[0]);
+      }
+      const main = result.slice(0, 6).sort((a, b) => a - b);
+      const booster = result[6];
+      const html = main.map(n => `<div class="ball">${n}</div>`).join('') +
+                   `<div class="ball booster">${booster}</div>`;
+      document.getElementById("numbers").innerHTML = html;
+    }
+
+    // PWA support
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
